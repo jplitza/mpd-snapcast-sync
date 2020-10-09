@@ -1,0 +1,5 @@
+argh
+bidict
+snapcast
+python-mpd2
+python-musicpd
