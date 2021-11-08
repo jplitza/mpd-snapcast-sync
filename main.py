@@ -7,8 +7,6 @@ import argh
 import snapcast.control
 from mpd.asyncio import MPDClient
 
-from bidict import bidict
-
 
 class MPDOutput:
     def __init__(self, data):
