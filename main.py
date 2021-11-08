@@ -39,15 +39,20 @@ class MpdSnapcastSyncer:
             self._logger.debug('Ignoring change of snapcast client %s: No matching MPD output' % name)
             return
 
+        if output.enabled != client.muted:
+            # If the output is not enabled and the client is muted (or vice
+            # versa), everything is fine.
+            return
+
         self._logger.info('Turning %s MPD output %s' % (
-            'off' if self.mpd_outputs[name].enabled else 'on',
+            'off' if client.muted else 'on',
             name
         ))
 
         # determine which method to call
-        actor = self.mpd.disableoutput if output.enabled else self.mpd.enableoutput
+        actor = self.mpd.disableoutput if client.muted else self.mpd.enableoutput
 
-        # invert stored state of the output to avoid calling
+        # fake stored state of the output to avoid calling
         # mpd_output_changed() from mpd_outputs_changed() when MPD notifies us
         # about our own change
         self.mpd_outputs[name].enabled = not self.mpd_outputs[name].enabled
